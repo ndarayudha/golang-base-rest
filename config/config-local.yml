@@ -1,0 +1,22 @@
+server:
+ AppVersion: 1.0.0
+ Port: :8080
+ ReadTimeout: 5
+ WriteTimeout: 5
+ Mode: Development
+
+mysql:
+ MysqlHost: localhost
+ MysqlPort: 3306
+ MysqlUser: root
+ MysqlPassword: password
+ MysqlDbName: golang_base
+ MysqlDriver: mysql
+ MysqlNetwork: tcp
+
+logger:
+  Development: true
+  DisableCaller: false
+  DisableStacktrace: false
+  Encoding: console
+  Level: info
