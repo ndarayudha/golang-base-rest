@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"golang_restfull_api/pkg/logger"
 	"net/http"
+	"rest_base/pkg/logger"
 	"time"
 
 	"github.com/julienschmidt/httprouter"

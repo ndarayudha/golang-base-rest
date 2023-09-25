@@ -3,12 +3,13 @@ package service
 import (
 	"context"
 	"database/sql"
-	"golang_restfull_api/internal/category"
-	"golang_restfull_api/internal/category/exception"
-	"golang_restfull_api/internal/category/model"
-	"golang_restfull_api/internal/category/web"
-	"golang_restfull_api/pkg/logger"
-	"golang_restfull_api/pkg/utils"
+	"rest_base/internal/category"
+	"rest_base/internal/category/exception"
+	"rest_base/internal/category/web"
+	dto "rest_base/internal/category/web/dto"
+	response "rest_base/internal/category/web/response"
+	"rest_base/pkg/logger"
+	"rest_base/pkg/utils"
 	"time"
 
 	"github.com/go-playground/validator"
@@ -25,7 +26,7 @@ func NewCategoryService(categoryRepository category.CategoryRepository, DB *sql.
 	return &CategoryServiceImpl{CategoryRepository: categoryRepository, DB: DB, Validate: validate, Logger: logger}
 }
 
-func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
+func (service *CategoryServiceImpl) Create(ctx context.Context, request dto.CategoryCreateRequest) response.CategoryResponse {
 	err := service.Validate.Struct(request)
 	utils.PanicIfError(err)
 
@@ -33,7 +34,7 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
 
-	category := model.Category{
+	category := category.Category{
 		Name:      request.Name,
 		CreatedAt: time.Now().Unix(),
 		UpdatedAt: time.Now().Unix(),
@@ -41,10 +42,10 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 
 	category = service.CategoryRepository.Save(ctx, tx, category)
 
-	return model.ToCategoryResponse(category)
+	return web.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
+func (service *CategoryServiceImpl) Update(ctx context.Context, request dto.CategoryUpdateRequest) response.CategoryResponse {
 	err := service.Validate.Struct(request)
 	utils.PanicIfError(err)
 
@@ -61,7 +62,7 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 
 	category = service.CategoryRepository.Update(ctx, tx, category)
 
-	return model.ToCategoryResponse(category)
+	return web.ToCategoryResponse(category)
 }
 
 func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) {
@@ -77,7 +78,7 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
 
-func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) web.CategoryResponse {
+func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) response.CategoryResponse {
 	tx, err := service.DB.Begin()
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
@@ -87,10 +88,10 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 
-	return model.ToCategoryResponse(category)
+	return web.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) FindByName(ctx context.Context, categoryName string) web.CategoryResponse {
+func (service *CategoryServiceImpl) FindByName(ctx context.Context, categoryName string) response.CategoryResponse {
 	tx, err := service.DB.Begin()
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
@@ -100,15 +101,15 @@ func (service *CategoryServiceImpl) FindByName(ctx context.Context, categoryName
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 
-	return model.ToCategoryResponse(category)
+	return web.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryResponse {
+func (service *CategoryServiceImpl) FindAll(ctx context.Context) []response.CategoryResponse {
 	tx, err := service.DB.Begin()
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
 
 	categories := service.CategoryRepository.FindAll(ctx, tx)
 
-	return model.ToCategoryResponses(categories)
+	return web.ToCategoryResponses(categories)
 }

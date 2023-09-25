@@ -1,10 +1,12 @@
 package controller
 
 import (
-	"golang_restfull_api/internal/category"
-	"golang_restfull_api/internal/category/web"
-	"golang_restfull_api/pkg/utils"
 	"net/http"
+	"rest_base/internal/category"
+
+	dto "rest_base/internal/category/web/dto"
+	response "rest_base/internal/category/web/response"
+	"rest_base/pkg/utils"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
@@ -21,13 +23,13 @@ func NewCategoryController(categoryService category.CategoryService) *CategoryCo
 }
 
 func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	categoryCreateRequest := web.CategoryCreateRequest{}
+	categoryCreateRequest := dto.CategoryCreateRequest{}
 
 	utils.ReadFromRequestBody(request, &categoryCreateRequest)
 
 	categoryResponse := controller.CategoryService.Create(request.Context(), categoryCreateRequest)
-	webResponse := web.WebResponse{
-		Code:   200,
+	webResponse := response.WebResponse{
+		Code:   201,
 		Status: "OK",
 		Data:   categoryResponse,
 	}
@@ -36,7 +38,7 @@ func (controller *CategoryControllerImpl) Create(writer http.ResponseWriter, req
 }
 
 func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	categoryUpdateRequest := web.CategoryUpdateRequest{}
+	categoryUpdateRequest := dto.CategoryUpdateRequest{}
 	utils.ReadFromRequestBody(request, &categoryUpdateRequest)
 
 	categoryId := params.ByName("id")
@@ -46,7 +48,7 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 	categoryUpdateRequest.Id = id
 
 	categoryResponse := controller.CategoryService.Update(request.Context(), categoryUpdateRequest)
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   categoryResponse,
@@ -61,7 +63,7 @@ func (controller *CategoryControllerImpl) Delete(writer http.ResponseWriter, req
 	utils.PanicIfError(err)
 
 	controller.CategoryService.Delete(request.Context(), id)
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 	}
@@ -75,7 +77,7 @@ func (controller *CategoryControllerImpl) FindById(writer http.ResponseWriter, r
 	utils.PanicIfError(err)
 
 	categoryResponse := controller.CategoryService.FindById(request.Context(), id)
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   categoryResponse,
@@ -88,7 +90,7 @@ func (controller *CategoryControllerImpl) FindByName(writer http.ResponseWriter,
 	name := params.ByName("name")
 
 	categoryResponse := controller.CategoryService.FindByName(request.Context(), name)
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   categoryResponse,
@@ -101,7 +103,7 @@ func (controller *CategoryControllerImpl) FindByName2(writer http.ResponseWriter
 	name := params.ByName("yok")
 
 	categoryResponse := controller.CategoryService.FindByName(request.Context(), name)
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   categoryResponse,
@@ -112,7 +114,7 @@ func (controller *CategoryControllerImpl) FindByName2(writer http.ResponseWriter
 
 func (controller *CategoryControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	categoryResponses := controller.CategoryService.FindAll(request.Context())
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   categoryResponses,

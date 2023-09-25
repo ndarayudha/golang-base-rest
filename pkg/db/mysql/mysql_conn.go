@@ -3,8 +3,8 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
-	"golang_restfull_api/config"
-	"golang_restfull_api/pkg/utils"
+	"rest_base/config"
+	"rest_base/pkg/utils"
 
 	"time"
 )

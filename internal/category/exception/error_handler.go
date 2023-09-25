@@ -1,8 +1,8 @@
 package exception
 
 import (
-	"golang_restfull_api/internal/category/web"
-	"golang_restfull_api/pkg/utils"
+	response "rest_base/internal/category/web/response"
+	"rest_base/pkg/utils"
 
 	"net/http"
 
@@ -31,7 +31,7 @@ func validationErrors(writer http.ResponseWriter, request *http.Request, err int
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusBadRequest)
 
-		webResponse := web.WebResponse{
+		webResponse := response.WebResponse{
 			Code:   http.StatusBadRequest,
 			Status: "BAD_REQUEST",
 			Data:   exception.Error(),
@@ -51,7 +51,7 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusNotFound)
 
-		webResponse := web.WebResponse{
+		webResponse := response.WebResponse{
 			Code:   http.StatusNotFound,
 			Status: "NOT_FOUND",
 			Data:   exception.Error,
@@ -70,7 +70,7 @@ func alreadyExistError(writer http.ResponseWriter, request *http.Request, err in
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusUnprocessableEntity)
 
-		webResponse := web.WebResponse{
+		webResponse := response.WebResponse{
 			Code:   http.StatusUnprocessableEntity,
 			Status: "ALREADY_EXIST",
 			Data:   exception.Error,
@@ -87,7 +87,7 @@ func internalServerError(writer http.ResponseWriter, request *http.Request, err 
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusInternalServerError)
 
-	webResponse := web.WebResponse{
+	webResponse := response.WebResponse{
 		Code:   http.StatusInternalServerError,
 		Status: "INTERNAL_SERVER_ERROR",
 		Data:   err,

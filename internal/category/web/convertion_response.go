@@ -1,17 +1,11 @@
-package model
+package web
 
 import (
-	"golang_restfull_api/internal/category/web"
+	"rest_base/internal/category"
+	web "rest_base/internal/category/web/response"
 )
 
-type Category struct {
-	Id        int
-	Name      string
-	CreatedAt int64
-	UpdatedAt int64
-}
-
-func ToCategoryResponse(category Category) web.CategoryResponse {
+func ToCategoryResponse(category category.Category) web.CategoryResponse {
 	return web.CategoryResponse{
 		Id:        category.Id,
 		Name:      category.Name,
@@ -20,7 +14,7 @@ func ToCategoryResponse(category Category) web.CategoryResponse {
 	}
 }
 
-func ToCategoryResponses(categories []Category) []web.CategoryResponse {
+func ToCategoryResponses(categories []category.Category) []web.CategoryResponse {
 	var categoryResponses []web.CategoryResponse
 	for _, category := range categories {
 		categoryResponses = append(categoryResponses, ToCategoryResponse(category))

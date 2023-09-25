@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"golang_restfull_api/pkg/logger"
+	"rest_base/pkg/logger"
 
 	"github.com/julienschmidt/httprouter"
 )

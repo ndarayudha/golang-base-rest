@@ -1,17 +1,17 @@
 package main
 
 import (
-	"golang_restfull_api/config"
-	"golang_restfull_api/internal/category/controller"
-	"golang_restfull_api/internal/category/delivery"
-	"golang_restfull_api/internal/category/repository"
-	"golang_restfull_api/internal/category/service"
-	"golang_restfull_api/internal/server"
-	"golang_restfull_api/pkg/db/mysql"
-	"golang_restfull_api/pkg/logger"
-	"golang_restfull_api/pkg/utils"
 	"log"
 	"os"
+	"rest_base/config"
+	"rest_base/internal/category/controller"
+	"rest_base/internal/category/repository"
+	"rest_base/internal/category/routes"
+	"rest_base/internal/category/service"
+	"rest_base/internal/server"
+	"rest_base/pkg/db/mysql"
+	"rest_base/pkg/logger"
+	"rest_base/pkg/utils"
 
 	"github.com/go-playground/validator"
 	_ "github.com/go-sql-driver/mysql"
@@ -39,7 +39,7 @@ func main() {
 	categoryRepositoryImpl := repository.NewCategoryRepository()
 	categoryServiceImpl := service.NewCategoryService(categoryRepositoryImpl, db, validate, appLogger)
 	categoryControllerImpl := controller.NewCategoryController(categoryServiceImpl)
-	categoryRouter := delivery.NewCategoryRoutes(categoryControllerImpl, appLogger)
+	categoryRouter := routes.NewCategoryRoutes(categoryControllerImpl, appLogger)
 
 	httpServer := server.NewServer(config, categoryRouter)
 

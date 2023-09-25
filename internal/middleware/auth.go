@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"golang_restfull_api/internal/category/web"
-	"golang_restfull_api/pkg/logger"
-	"golang_restfull_api/pkg/utils"
 	"net/http"
+
+	response "rest_base/internal/category/web/response"
+	"rest_base/pkg/logger"
+	"rest_base/pkg/utils"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -17,7 +18,7 @@ var AuthMiddleware = func(f httprouter.Handle, _ logger.Logger) httprouter.Handl
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusUnauthorized)
 
-			webResponse := web.WebResponse{
+			webResponse := response.WebResponse{
 				Code:   http.StatusUnauthorized,
 				Status: "UNAUTHORIZED",
 			}

@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"golang_restfull_api/config"
 	"os"
+	"rest_base/config"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

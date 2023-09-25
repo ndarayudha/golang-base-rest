@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"golang_restfull_api/internal/category/model"
-	"golang_restfull_api/pkg/utils"
+	"rest_base/internal/category"
+	"rest_base/pkg/utils"
 )
 
 type CategoryRepositoryImpl struct {
@@ -15,7 +15,7 @@ func NewCategoryRepository() *CategoryRepositoryImpl {
 	return &CategoryRepositoryImpl{}
 }
 
-func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category model.Category) model.Category {
+func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category category.Category) category.Category {
 	result, err := tx.ExecContext(ctx, createCategory, category.Name, category.CreatedAt, category.UpdatedAt)
 	utils.PanicIfError(err)
 
@@ -26,58 +26,58 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 	return category
 }
 
-func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category model.Category) model.Category {
+func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category category.Category) category.Category {
 	_, err := tx.ExecContext(ctx, updateCategory, category.Name, category.Id)
 	utils.PanicIfError(err)
 
 	return category
 }
 
-func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category model.Category) {
+func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category category.Category) {
 	_, err := tx.ExecContext(ctx, deleteCategoryById, category.Id)
 	utils.PanicIfError(err)
 }
 
-func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (model.Category, error) {
+func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (category.Category, error) {
 	rows, err := tx.QueryContext(ctx, findCategoryById, categoryId)
 	utils.PanicIfError(err)
 
 	defer rows.Close()
 
-	category := model.Category{}
+	category := category.Category{}
 	if rows.Next() {
-		err := rows.Scan(&category.Id, &category.Name)
+		err := rows.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt)
 		utils.PanicIfError(err)
 		return category, nil
 	} else {
-		return category, errors.New("category tidak ditemukan")
+		return category, errors.New("category not found")
 	}
 }
 
-func (repository *CategoryRepositoryImpl) FindByName(ctx context.Context, tx *sql.Tx, categoryName string) (model.Category, error) {
+func (repository *CategoryRepositoryImpl) FindByName(ctx context.Context, tx *sql.Tx, categoryName string) (category.Category, error) {
 	rows, err := tx.QueryContext(ctx, findCategoryByName, categoryName)
 	utils.PanicIfError(err)
 
 	defer rows.Close()
 
-	category := model.Category{}
+	category := category.Category{}
 	if rows.Next() {
 		err := rows.Scan(&category.Id, &category.Name)
 		utils.PanicIfError(err)
 		return category, nil
 	} else {
-		return category, errors.New("category tidak ditemukan")
+		return category, errors.New("category not found")
 	}
 }
 
-func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []model.Category {
+func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []category.Category {
 	rows, err := tx.QueryContext(ctx, findCategories)
 	utils.PanicIfError(err)
 
 	defer rows.Close()
-	var categories []model.Category
+	var categories []category.Category
 	for rows.Next() {
-		category := model.Category{}
+		category := category.Category{}
 		err := rows.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt)
 		utils.PanicIfError(err)
 		categories = append(categories, category)

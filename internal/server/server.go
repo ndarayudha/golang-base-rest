@@ -1,8 +1,8 @@
 package server
 
 import (
-	"golang_restfull_api/config"
 	"net/http"
+	"rest_base/config"
 	"time"
 )
 
