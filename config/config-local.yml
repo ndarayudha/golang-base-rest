@@ -10,7 +10,7 @@ mysql:
  MysqlPort: 3306
  MysqlUser: root
  MysqlPassword: password
- MysqlDbName: golang_base
+ MysqlDbName: yourdb
  MysqlDriver: mysql
  MysqlNetwork: tcp
 

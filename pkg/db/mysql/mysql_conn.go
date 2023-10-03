@@ -23,7 +23,7 @@ func NewDB(c *config.Config) *sql.DB {
 		c.Mysql.MysqlNetwork,
 		c.Mysql.MysqlHost,
 		c.Mysql.MysqlPort,
-		c.Mysql.MysqlDbName,
+		c.Mysql.MysqlDBName,
 	)
 
 	db, err := sql.Open(c.Mysql.MysqlDriver, connStr)

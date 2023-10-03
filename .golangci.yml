@@ -1,0 +1,102 @@
+run:
+  go: "1.18"
+
+  tests: true
+
+  skip-dirs:
+    - basic/
+  
+output:
+  format: line-number:golangci-lint.out,colored-line-number:stdout
+
+
+linters-settings:
+  gocognit:
+    min-complexity: 20
+  gocyclo:
+    min-complexity: 20
+  dupl:
+    threshold: 150
+  lll:
+    line-length: 120
+    tab-width: 1
+  unused:
+    check-exported: false
+  funlen:
+    statements: 60
+    lines: 150
+
+  depguard:
+    # Rules to apply.
+    #
+    # Variables:
+    # - File Variables
+    #   you can still use and exclamation mark ! in front of a variable to say not to use it.
+    #   Example !$test will match any file that is not a go test file.
+    #
+    #   `$all` - matches all go files
+    #   `$test` - matches all go test files
+    #
+    # - Package Variables
+    #
+    #  `$gostd` - matches all of go's standard library (Pulled from `GOROOT`)
+    #
+    # Default: Only allow $gostd in all files.
+    rules:
+      # Name of a rule.
+      main:
+        # List of file globs that will match this list of settings to compare against.
+        # Default: $all
+        files:
+          - "$all"
+        # List of allowed packages.
+        allow:
+          - "$gostd"
+        # Packages that are not allowed where the value is a suggestion.
+        # deny:
+        #   - pkg: "github.com/pkg/errors"
+        #     desc: Should be replaced by standard lib errors package
+  
+  gosec:
+    exclude:
+      - "G104"
+      
+  godox:
+    keywords: 
+      - TODO
+      - BUG
+      - FIXME
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    # - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - funlen
+    - gocognit
+    - goconst
+    - gocritic
+    - godox
+    - gofmt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    # - revive
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+    - nolintlint
+    - containedctx
+    # - durationcheck

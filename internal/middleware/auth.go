@@ -12,7 +12,7 @@ import (
 
 var AuthMiddleware = func(f httprouter.Handle, _ logger.Logger) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		if "SECRET" == r.Header.Get("X-API-Key") {
+		if r.Header.Get("X-API-Key") == "SECRET" {
 			f(w, r, params)
 		} else {
 			w.Header().Set("Content-Type", "application/json")

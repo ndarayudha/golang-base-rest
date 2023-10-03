@@ -10,7 +10,6 @@ import (
 )
 
 func NewCategoryRoutes(categoryController category.CategoryController, logger logger.Logger) *httprouter.Router {
-
 	router := httprouter.New()
 
 	categoryBaseRoute := "/api/categories"
@@ -27,7 +26,7 @@ func NewCategoryRoutes(categoryController category.CategoryController, logger lo
 	}{
 		{"GET", "", categoryController.FindAll, categoryMiddleware},
 		{"POST", "", categoryController.Create, categoryMiddleware},
-		{"GET", "/:id", categoryController.FindById, categoryMiddleware},
+		{"GET", "/:id", categoryController.FindByID, categoryMiddleware},
 		{"PUT", "/:id", categoryController.Update, categoryMiddleware},
 		{"DELETE", "/:id", categoryController.Delete, categoryMiddleware},
 	}

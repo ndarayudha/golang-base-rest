@@ -22,36 +22,36 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 	id, err := result.LastInsertId()
 	utils.PanicIfError(err)
 
-	category.Id = int(id)
+	category.ID = int(id)
 	return category
 }
 
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category category.Category) category.Category {
-	_, err := tx.ExecContext(ctx, updateCategory, category.Name, category.Id)
+	_, err := tx.ExecContext(ctx, updateCategory, category.Name, category.ID)
 	utils.PanicIfError(err)
 
 	return category
 }
 
 func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category category.Category) {
-	_, err := tx.ExecContext(ctx, deleteCategoryById, category.Id)
+	_, err := tx.ExecContext(ctx, deleteCategoryByID, category.ID)
 	utils.PanicIfError(err)
 }
 
-func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (category.Category, error) {
-	rows, err := tx.QueryContext(ctx, findCategoryById, categoryId)
+func (repository *CategoryRepositoryImpl) FindByID(ctx context.Context, tx *sql.Tx, categoryID int) (category.Category, error) {
+	rows, err := tx.QueryContext(ctx, findCategoryByID, categoryID)
 	utils.PanicIfError(err)
 
 	defer rows.Close()
 
 	category := category.Category{}
 	if rows.Next() {
-		err := rows.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt)
+		err := rows.Scan(&category.ID, &category.Name, &category.CreatedAt, &category.UpdatedAt)
 		utils.PanicIfError(err)
 		return category, nil
-	} else {
-		return category, errors.New("category not found")
 	}
+
+	return category, errors.New("category not found")
 }
 
 func (repository *CategoryRepositoryImpl) FindByName(ctx context.Context, tx *sql.Tx, categoryName string) (category.Category, error) {
@@ -62,12 +62,12 @@ func (repository *CategoryRepositoryImpl) FindByName(ctx context.Context, tx *sq
 
 	category := category.Category{}
 	if rows.Next() {
-		err := rows.Scan(&category.Id, &category.Name)
+		err := rows.Scan(&category.ID, &category.Name)
 		utils.PanicIfError(err)
 		return category, nil
-	} else {
-		return category, errors.New("category not found")
 	}
+
+	return category, errors.New("category not found")
 }
 
 func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []category.Category {
@@ -78,7 +78,7 @@ func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.T
 	var categories []category.Category
 	for rows.Next() {
 		category := category.Category{}
-		err := rows.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt)
+		err := rows.Scan(&category.ID, &category.Name, &category.CreatedAt, &category.UpdatedAt)
 		utils.PanicIfError(err)
 		categories = append(categories, category)
 	}

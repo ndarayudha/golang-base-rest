@@ -1,7 +1,7 @@
 package category
 
 type Category struct {
-	Id        int
+	ID        int
 	Name      string
 	CreatedAt int64
 	UpdatedAt int64

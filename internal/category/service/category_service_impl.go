@@ -22,8 +22,8 @@ type CategoryServiceImpl struct {
 	Logger             logger.Logger
 }
 
-func NewCategoryService(categoryRepository category.CategoryRepository, DB *sql.DB, validate *validator.Validate, logger logger.Logger) *CategoryServiceImpl {
-	return &CategoryServiceImpl{CategoryRepository: categoryRepository, DB: DB, Validate: validate, Logger: logger}
+func NewCategoryService(categoryRepository category.CategoryRepository, db *sql.DB, validate *validator.Validate, logger logger.Logger) *CategoryServiceImpl {
+	return &CategoryServiceImpl{CategoryRepository: categoryRepository, DB: db, Validate: validate, Logger: logger}
 }
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request dto.CategoryCreateRequest) response.CategoryResponse {
@@ -53,7 +53,7 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request dto.Cate
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
+	category, err := service.CategoryRepository.FindByID(ctx, tx, request.ID)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
@@ -65,12 +65,12 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request dto.Cate
 	return web.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) {
+func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryID int) {
 	tx, err := service.DB.Begin()
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
+	category, err := service.CategoryRepository.FindByID(ctx, tx, categoryID)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
@@ -78,12 +78,12 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
 
-func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int) response.CategoryResponse {
+func (service *CategoryServiceImpl) FindByID(ctx context.Context, categoryID int) response.CategoryResponse {
 	tx, err := service.DB.Begin()
 	utils.PanicIfError(err)
 	defer utils.CommitOrRollback(tx)
 
-	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
+	category, err := service.CategoryRepository.FindByID(ctx, tx, categoryID)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}

@@ -32,7 +32,7 @@ type apiLogger struct {
 }
 
 // App Logger constructor
-func NewApiLogger(cfg *config.Config) *apiLogger {
+func NewAPILogger(cfg *config.Config) *apiLogger {
 	return &apiLogger{cfg: cfg}
 }
 

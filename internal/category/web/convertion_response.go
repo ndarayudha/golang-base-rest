@@ -7,7 +7,7 @@ import (
 
 func ToCategoryResponse(category category.Category) web.CategoryResponse {
 	return web.CategoryResponse{
-		Id:        category.Id,
+		ID:        category.ID,
 		Name:      category.Name,
 		CreatedAt: category.CreatedAt,
 		UpdatedAt: category.UpdatedAt,

@@ -30,7 +30,7 @@ type MysqlConfig struct {
 	MysqlPort     string
 	MysqlUser     string
 	MysqlPassword string
-	MysqlDbName   string
+	MysqlDBName   string
 	MysqlDriver   string
 	MysqlNetwork  string
 }

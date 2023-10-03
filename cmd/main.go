@@ -30,7 +30,7 @@ func main() {
 		log.Fatalf("ParseConfig: %v", err)
 	}
 
-	appLogger := logger.NewApiLogger(config)
+	appLogger := logger.NewAPILogger(config)
 	appLogger.InitLogger()
 	appLogger.Infof("AppVersion: %s, LogLevel: %s, Mode: %s", config.Server.AppVersion, config.Logger.Level, config.Server.Mode)
 
